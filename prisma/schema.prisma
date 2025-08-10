@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  MANAGER
+  CARE_WORKER
+}
+
+enum ShiftStatus {
+  CLOCKED_IN
+  CLOCKED_OUT
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  role        Role     @default(CARE_WORKER)
+  auth0Id     String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  shifts            Shift[]
+  locationSettings  LocationSetting[]
+
+  @@map("users")
+}
+
+model Shift {
+  id                String      @id @default(cuid())
+  userId            String
+  clockInTime       DateTime?
+  clockOutTime      DateTime?
+  clockInLocation   Json?       // {lat: number, lng: number, address?: string}
+  clockOutLocation  Json?       // {lat: number, lng: number, address?: string}
+  clockInNotes      String?
+  clockOutNotes     String?
+  status            ShiftStatus @default(CLOCKED_OUT)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("shifts")
+}
+
+model LocationSetting {
+  id        String   @id @default(cuid())
+  managerId String
+  name      String   @default("Work Location")
+  latitude  Float
+  longitude Float
+  radius    Float    @default(1.0) // radius in kilometers
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  manager User @relation(fields: [managerId], references: [id], onDelete: Cascade)
+
+  @@map("location_settings")
+}
