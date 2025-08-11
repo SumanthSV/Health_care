@@ -3,7 +3,7 @@ import { PrismaClient, Role } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('Starting database seed...')
+  // console.log('Starting database seed...')
 
   // Create sample users
   const manager = await prisma.user.upsert({

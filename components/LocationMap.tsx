@@ -305,7 +305,7 @@ export default function LocationMap({
           </GoogleMap>
 
           {/* Current Location Marker */}
-          {currentLocation && (
+          {currentLocation && window.google?.maps?.Size && (
             <Marker
               position={currentLocation}
               title="Your Current Location"
