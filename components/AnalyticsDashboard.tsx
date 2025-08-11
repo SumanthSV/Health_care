@@ -224,9 +224,9 @@ export default function AnalyticsDashboard() {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-8 animate-fade-in bg-mesh-gradient p-6 rounded-3xl">
       {/* Performance Overview */}
-      <div className="premium-card p-6">
+      <div className="premium-card p-6 shadow-xl bg-gradient-to-br from-white to-blue-50 border-blue-200">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-xl font-semibold text-gray-900">Performance Overview</h3>
@@ -240,51 +240,51 @@ export default function AnalyticsDashboard() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <LineChartOutlined className="w-8 h-8 text-blue-600" />
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <LineChartOutlined className="w-8 h-8 text-white" />
             </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">
+            <div className="text-3xl font-bold text-blue-700 mb-1">
               {analytics?.totalHoursToday?.toFixed(1) || '0.0'}h
             </div>
-            <div className="text-sm text-gray-600 mb-2">Hours Today</div>
+            <div className="text-sm text-blue-600 mb-2 font-medium">Hours Today</div>
             <Progress 
               percent={Math.min(100, ((analytics?.totalHoursToday || 0) / 40) * 100)} 
               showInfo={false} 
-              strokeColor="#3b82f6"
+              strokeColor="linear-gradient(to right, #3b82f6, #10b981)"
               trailColor="#e5e7eb"
               size="small"
             />
           </div>
           
           <div className="text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <UsergroupAddOutlined className="w-8 h-8 text-green-600" />
+            <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <UsergroupAddOutlined className="w-8 h-8 text-white" />
             </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">
+            <div className="text-3xl font-bold text-green-700 mb-1">
               {analytics?.totalStaffClockedIn || 0}
             </div>
-            <div className="text-sm text-gray-600 mb-2">Active Staff</div>
+            <div className="text-sm text-green-600 mb-2 font-medium">Active Staff</div>
             <Progress 
               percent={Math.min(100, ((analytics?.totalStaffClockedIn || 0) / 12) * 100)} 
               showInfo={false} 
-              strokeColor="#10b981"
+              strokeColor="linear-gradient(to right, #10b981, #059669)"
               trailColor="#e5e7eb"
               size="small"
             />
           </div>
           
           <div className="text-center">
-            <div className="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <ClockCircleOutlined className="w-8 h-8 text-purple-600" />
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <ClockCircleOutlined className="w-8 h-8 text-white" />
             </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">
+            <div className="text-3xl font-bold text-purple-700 mb-1">
               {analytics?.averageHoursPerDay?.toFixed(1) || '0.0'}h
             </div>
-            <div className="text-sm text-gray-600 mb-2">Daily Average</div>
+            <div className="text-sm text-purple-600 mb-2 font-medium">Daily Average</div>
             <Progress 
               percent={Math.min(100, ((analytics?.averageHoursPerDay || 0) / 8) * 100)} 
               showInfo={false} 
-              strokeColor="#8b5cf6"
+              strokeColor="linear-gradient(to right, #8b5cf6, #7c3aed)"
               trailColor="#e5e7eb"
               size="small"
             />
@@ -295,7 +295,7 @@ export default function AnalyticsDashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <div className="premium-card p-6 hover-lift">
+          <div className="premium-card p-6 hover-lift shadow-xl bg-gradient-to-br from-white to-gray-50">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h4 className="text-lg font-semibold text-gray-900">Daily Activity</h4>
@@ -321,7 +321,7 @@ export default function AnalyticsDashboard() {
         </div>
         
         <div>
-          <div className="premium-card p-6 hover-lift">
+          <div className="premium-card p-6 hover-lift shadow-xl bg-gradient-to-br from-white to-green-50 border-green-200">
             <div className="mb-6">
               <h4 className="text-lg font-semibold text-gray-900">Staff Status</h4>
               <p className="text-sm text-gray-600">Current availability</p>
@@ -350,7 +350,7 @@ export default function AnalyticsDashboard() {
       </div>
 
       {/* Weekly Hours Chart */}
-      <div className="premium-card p-6 animate-scale-in hover-lift">
+      <div className="premium-card p-6 animate-scale-in hover-lift shadow-xl bg-gradient-to-br from-white to-purple-50 border-purple-200">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h4 className="text-lg font-semibold text-gray-900">Weekly Hours by Staff</h4>

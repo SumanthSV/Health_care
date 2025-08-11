@@ -223,31 +223,92 @@ export default function LocationSetter() {
 
   // Enhanced address search functionality
   const searchAddresses = async (searchText: string) => {
-    if (!searchText || searchText.length < 3) {
+    if (!searchText || searchText.length < 2) {
       setAddressSuggestions([]);
       return;
     }
 
     setIsSearching(true);
     try {
+      // Enhanced search with better parameters for city/place search
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(searchText)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(searchText)}&components=country:US|country:CA|country:GB|country:AU&types=locality|sublocality|administrative_area_level_1|administrative_area_level_2|country&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
       );
       const data = await response.json();
 
       if (data.results && data.results.length > 0) {
-        const suggestions: AddressSuggestion[] = data.results.slice(0, 8).map((result: any) => ({
-          value: result.formatted_address,
-          label: result.formatted_address,
-          location: {
-            lat: result.geometry.location.lat,
-            lng: result.geometry.location.lng,
-          },
-        }));
+        const suggestions: AddressSuggestion[] = data.results.slice(0, 6).map((result: any) => {
+          // Extract meaningful location name
+          const addressComponents = result.address_components;
+          const city = addressComponents.find((c: any) => c.types.includes('locality'))?.long_name;
+          const state = addressComponents.find((c: any) => c.types.includes('administrative_area_level_1'))?.short_name;
+          const country = addressComponents.find((c: any) => c.types.includes('country'))?.short_name;
+          
+          let displayName = result.formatted_address;
+          if (city && state) {
+            displayName = `${city}, ${state}${country && country !== 'US' ? `, ${country}` : ''}`;
+          }
+          
+          return {
+            value: displayName,
+            label: displayName,
+            location: {
+              lat: result.geometry.location.lat,
+              lng: result.geometry.location.lng,
+            },
+          };
+        });
         setAddressSuggestions(suggestions);
       } else {
-        setAddressSuggestions([]);
+        // If no results, try a broader search
+        const broadResponse = await fetch(
+          `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(searchText)}&type=hospital|health|medical&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+        );
+        const broadData = await broadResponse.json();
+        
+        if (broadData.results && broadData.results.length > 0) {
+          const suggestions: AddressSuggestion[] = broadData.results.slice(0, 6).map((result: any) => ({
+            value: result.name + ', ' + result.formatted_address,
+            label: result.name + ', ' + result.formatted_address,
+          location: {
+              lat: result.geometry.location.lat,
+              lng: result.geometry.location.lng,
+          },
+          }));
+          setAddressSuggestions(suggestions);
+        } else {
+          setAddressSuggestions([]);
+        }
       }
+    } catch (error) {
+      console.error('Address search error:', error);
+      toast.error('Failed to search addresses. Please try again.');
+      setAddressSuggestions([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Enhanced address search with Places API fallback
+  const searchAddressesEnhanced = async (searchText: string) => {
+    if (!searchText || searchText.length < 2) {
+        setAddressSuggestions(suggestions);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      // First try geocoding for exact matches
+      const geocodeResponse = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(searchText)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+      );
+            lat: result.geometry.location.lat,
+            lng: result.geometry.location.lng,
+      let suggestions: AddressSuggestion[] = [];
+        }));
+      }
+      
+      setAddressSuggestions(suggestions);
     } catch (error) {
       console.error('Address search error:', error);
       toast.error('Failed to search addresses. Please try again.');
@@ -319,9 +380,9 @@ export default function LocationSetter() {
   const existingLocation = locationData?.locationSettings?.[0];
 
   return (
-    <div className="space-y-6 md:space-y-8 animate-fade-in px-4 md:px-0">
+    <div className="space-y-6 md:space-y-8 animate-fade-in px-4 md:px-0 bg-galaxy-pattern min-h-screen py-8">
       {/* Enhanced Header */}
-      <div className="text-center">
+      <div className="text-center mb-12">
         <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 via-blue-600 to-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6 hover-lift animate-scale-in shadow-lg">
           <EnvironmentOutlined className="w-8 h-8 md:w-10 md:h-10 text-white" />
         </div>
@@ -361,9 +422,9 @@ export default function LocationSetter() {
         {/* Enhanced Settings Panel */}
         <div className="space-y-6 animate-slide-in-left">
           {/* Enhanced Address Search Card */}
-          <div className="premium-card p-4 md:p-6 hover-lift shadow-md">
+          <div className="premium-card p-4 md:p-6 hover-lift shadow-xl bg-gradient-to-br from-white to-blue-50 border-blue-200">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
                 <SearchOutlined className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -376,10 +437,10 @@ export default function LocationSetter() {
               <AutoComplete
                 value={addressSearchValue}
                 options={addressSuggestions}
-                onSearch={debouncedAddressSearch}
+                onSearch={searchAddressesEnhanced}
                 onSelect={handleAddressSelect}
                 onChange={setAddressSearchValue}
-                placeholder="Search hospitals, clinics, or any address..."
+                placeholder="Search cities, hospitals, or healthcare facilities..."
                 className="w-full"
                 size="large"
                 allowClear
@@ -392,8 +453,8 @@ export default function LocationSetter() {
                   </div>
                 ) : (
                   <div className="text-center py-6 text-gray-500">
-                    {addressSearchValue.length < 3 ? 
-                      'Type at least 3 characters to search' : 
+                    {addressSearchValue.length < 2 ? 
+                      'Type at least 2 characters to search' : 
                       'No addresses found. Try a different search term.'}
                   </div>
                 )}
@@ -420,14 +481,14 @@ export default function LocationSetter() {
             </div>
 
             <div className="mt-4 text-xs text-gray-500 bg-gray-50 rounded-lg p-3">
-              💡 <strong>Tip:</strong> Search for specific addresses like "123 Main St Hospital" or facility names for the most accurate results.
+              💡 <strong>Tip:</strong> Search for cities like "New York", hospitals like "Mayo Clinic", or healthcare facilities for quick results.
             </div>
           </div>
 
           {/* Enhanced Location Configuration Card */}
-          <div className="premium-card p-4 md:p-6 hover-lift shadow-md">
+          <div className="premium-card p-4 md:p-6 hover-lift shadow-xl bg-gradient-to-br from-white to-green-50 border-green-200">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
                 <AimOutlined className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -489,7 +550,7 @@ export default function LocationSetter() {
           </div>
 
           {/* Enhanced Action Buttons */}
-          <div className="premium-card p-4 md:p-6 hover-lift shadow-md">
+          <div className="premium-card p-4 md:p-6 hover-lift shadow-xl bg-gradient-to-br from-white to-purple-50 border-purple-200">
             <div className="space-y-4">
               <Button
                 type="dashed"
@@ -541,9 +602,9 @@ export default function LocationSetter() {
           </div>
 
           {/* Enhanced Instructions */}
-          <div className="premium-card p-4 md:p-6 hover-lift shadow-md">
+          <div className="premium-card p-4 md:p-6 hover-lift shadow-xl bg-gradient-to-br from-white to-orange-50 border-orange-200">
             <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-6 flex items-center">
-              <div className="w-6 h-6 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
                 <span className="text-white text-xs">?</span>
               </div>
               Setup Guide
@@ -597,11 +658,11 @@ export default function LocationSetter() {
 
         {/* Enhanced Map */}
         <div className="animate-slide-in-right">
-          <div className="premium-card overflow-hidden hover-lift shadow-lg">
-            <div className="p-4 md:p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-blue-50">
+          <div className="premium-card overflow-hidden hover-lift shadow-2xl">
+            <div className="p-4 md:p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-green-50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center shadow-sm">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
                     <EnvironmentOutlined className="w-6 h-6 text-white" />
                   </div>
                   <div>

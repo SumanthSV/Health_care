@@ -375,7 +375,7 @@ export default function WorkerDashboard({ user }: Props) {
       )}
 
       {/* Current Status Card */}
-      <div className="premium-card p-6 md:p-8 text-center hover-lift shadow-lg">
+      <div className="premium-card p-6 md:p-8 text-center hover-lift shadow-xl bg-gradient-to-br from-white to-gray-50">
         <div className="space-y-6">
           {isCurrentlyClockedIn ? (
             <div className="animate-scale-in space-y-4">
@@ -422,8 +422,8 @@ export default function WorkerDashboard({ user }: Props) {
       </div>
 
       {/* Location Map */}
-      <div className="premium-card overflow-hidden shadow-lg">
-        <div className="p-4 md:p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-blue-50">
+      <div className="premium-card overflow-hidden shadow-xl">
+        <div className="p-4 md:p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-green-50">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
@@ -483,7 +483,7 @@ export default function WorkerDashboard({ user }: Props) {
 
       {/* Clock Action Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="premium-card p-4 md:p-6 hover-lift shadow-md">
+        <div className="premium-card p-4 md:p-6 hover-lift shadow-xl bg-gradient-to-br from-green-50 to-green-100 border-green-200">
           <div className="text-center space-y-4">
             <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg hover:scale-105 transition-transform duration-200">
               <ClockCircleOutlined className="w-8 h-8 md:w-10 md:h-10 text-white" />
@@ -515,7 +515,7 @@ export default function WorkerDashboard({ user }: Props) {
           </div>
         </div>
 
-        <div className="premium-card p-4 md:p-6 hover-lift shadow-md">
+        <div className="premium-card p-4 md:p-6 hover-lift shadow-xl bg-gradient-to-br from-red-50 to-red-100 border-red-200">
           <div className="text-center space-y-4">
             <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-red-400 to-red-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg hover:scale-105 transition-transform duration-200">
               <StopOutlined className="w-8 h-8 md:w-10 md:h-10 text-white" />
@@ -617,7 +617,7 @@ export default function WorkerDashboard({ user }: Props) {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50" ref={dashboardRef}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 bg-ripple-pattern" ref={dashboardRef}>
       <Navbar userRole="CARE_WORKER" userName={user.name} userEmail={user.email} userImage={auth0User?.picture} />
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">

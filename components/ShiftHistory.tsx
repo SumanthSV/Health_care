@@ -198,55 +198,57 @@ export default function ShiftHistory() {
   }, 0);
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-4 md:space-y-6 animate-fade-in px-4 md:px-0">
       {/* Summary Card */}
-      <Card className="hover-lift transition-all duration-300 animate-slide-in-left">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <Card className="premium-card hover-lift transition-all duration-300 animate-slide-in-left">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-600 animate-scale-in">
+            <div className="text-2xl md:text-3xl font-bold text-blue-600 animate-scale-in">
               {filteredShifts.length}
             </div>
-            <Text type="secondary">Total Shifts</Text>
+            <Text type="secondary" className="text-xs md:text-sm">Total Shifts</Text>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-green-600 animate-scale-in">
+            <div className="text-2xl md:text-3xl font-bold text-green-600 animate-scale-in">
               {totalHours.toFixed(1)}h
             </div>
-            <Text type="secondary">Total Hours</Text>
+            <Text type="secondary" className="text-xs md:text-sm">Total Hours</Text>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-orange-600 animate-scale-in">
+            <div className="text-2xl md:text-3xl font-bold text-orange-600 animate-scale-in">
               {filteredShifts.length > 0 ? (totalHours / filteredShifts.length).toFixed(1) : '0.0'}h
             </div>
-            <Text type="secondary">Avg per Shift</Text>
+            <Text type="secondary" className="text-xs md:text-sm">Avg per Shift</Text>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-600 animate-scale-in">
+            <div className="text-2xl md:text-3xl font-bold text-purple-600 animate-scale-in">
               {filteredShifts.filter((shift: any) => shift.status === 'CLOCKED_IN').length}
             </div>
-            <Text type="secondary">Active Shifts</Text>
+            <Text type="secondary" className="text-xs md:text-sm">Active Shifts</Text>
           </div>
         </div>
       </Card>
 
       {/* Filters */}
-      <Card size="small" className="animate-slide-in-right">
-        <div className="flex flex-wrap gap-4 items-center">
+      <Card size="small" className="premium-card animate-slide-in-right">
+        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
           <div>
-            <Text strong className="mr-2">Date Range:</Text>
+            <Text strong className="block md:inline mr-0 md:mr-2 mb-2 md:mb-0">Date Range:</Text>
             <RangePicker
               value={dateRange}
               onChange={(dates) => setDateRange(dates as [dayjs.Dayjs, dayjs.Dayjs] | null)}
               format="YYYY-MM-DD"
               allowClear
+              className="w-full md:w-auto"
             />
           </div>
           <div>
-            <Text strong className="mr-2">Status:</Text>
+            <Text strong className="block md:inline mr-0 md:mr-2 mb-2 md:mb-0">Status:</Text>
             <Select
               value={statusFilter}
               onChange={setStatusFilter}
-              style={{ width: 150 }}
+              className="w-full md:w-auto"
+              style={{ minWidth: 150 }}
             >
               <Option value="all">All Status</Option>
               <Option value="CLOCKED_IN">Active</Option>
@@ -257,40 +259,47 @@ export default function ShiftHistory() {
       </Card>
 
       {/* History Table */}
-      <Card className="animate-scale-in hover-lift transition-all duration-300">
+      <Card className="premium-card animate-scale-in hover-lift transition-all duration-300">
         <div className="mb-4">
-          <Title level={4}>Shift History</Title>
-          <Text type="secondary">
+          <Title level={4} className="text-lg md:text-xl">Shift History</Title>
+          <Text type="secondary" className="text-sm md:text-base">
             Complete record of all your clock-in and clock-out activities
           </Text>
         </div>
         
-        <Table
-          columns={columns}
-          dataSource={filteredShifts}
-          loading={loading}
-          pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total, range) => 
-              `${range[0]}-${range[1]} of ${total} shifts`,
-          }}
-          rowKey="id"
-          locale={{
-            emptyText: (
-              <div className="py-8 text-center animate-fade-in">
-                <ClockCircleOutlined className="text-6xl text-gray-300 mb-4" />
-                <Title level={4} className="text-gray-400">No Shift History</Title>
-                <Text type="secondary">
-                  {dateRange || statusFilter !== 'all' ? 
-                    'No shifts match your current filters' : 
-                    'Start clocking in to see your shift history here'}
-                </Text>
-              </div>
-            )
-          }}
-        />
+        <div className="overflow-x-auto">
+          <Table
+            columns={columns}
+            dataSource={filteredShifts}
+            loading={loading}
+            pagination={{
+              pageSize: window.innerWidth < 768 ? 5 : 10,
+              showSizeChanger: window.innerWidth >= 768,
+              showQuickJumper: window.innerWidth >= 768,
+              showTotal: (total, range) => 
+                window.innerWidth >= 768 ? 
+                `${range[0]}-${range[1]} of ${total} shifts` : 
+                `${total} shifts`,
+              size: window.innerWidth < 768 ? 'small' : 'default',
+            }}
+            rowKey="id"
+            scroll={{ x: 800 }}
+            size={window.innerWidth < 768 ? 'small' : 'middle'}
+            locale={{
+              emptyText: (
+                <div className="py-8 text-center animate-fade-in">
+                  <ClockCircleOutlined className="text-4xl md:text-6xl text-gray-300 mb-4" />
+                  <Title level={4} className="text-gray-400 text-base md:text-lg">No Shift History</Title>
+                  <Text type="secondary" className="text-sm md:text-base">
+                    {dateRange || statusFilter !== 'all' ? 
+                      'No shifts match your current filters' : 
+                      'Start clocking in to see your shift history here'}
+                  </Text>
+                </div>
+              )
+            }}
+          />
+        </div>
       </Card>
     </div>
   );

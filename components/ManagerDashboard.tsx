@@ -90,70 +90,70 @@ export default function ManagerDashboard({ user }: Props) {
           <div className="space-y-8">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="premium-card p-6 hover-lift">
+              <div className="premium-card p-6 hover-lift bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Staff Clocked In</p>
-                    <p className="text-3xl font-bold text-gray-900 mt-2">
+                    <p className="text-sm font-medium text-blue-600">Staff Clocked In</p>
+                    <p className="text-3xl font-bold text-blue-700 mt-2">
                       {statsLoading ? (
                         <div className="loading-skeleton h-8 w-16 rounded" />
                       ) : (
                         stats?.totalStaffClockedIn || 0
                       )}
                     </p>
-                    <p className="text-sm text-green-600 mt-1">
+                    <p className="text-sm text-blue-500 mt-1">
                       {activeStaff.length} active now
                     </p>
                   </div>
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <UserOutlined className="w-6 h-6 text-blue-600" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <UserOutlined className="w-8 h-8 text-white" />
                   </div>
                 </div>
               </div>
 
-              <div className="premium-card p-6 hover-lift">
+              <div className="premium-card p-6 hover-lift bg-gradient-to-br from-green-50 to-green-100 border-green-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Hours Today</p>
-                    <p className="text-3xl font-bold text-gray-900 mt-2">
+                    <p className="text-sm font-medium text-green-600">Hours Today</p>
+                    <p className="text-3xl font-bold text-green-700 mt-2">
                       {statsLoading ? (
                         <div className="loading-skeleton h-8 w-16 rounded" />
                       ) : (
                         `${stats?.totalHoursToday?.toFixed(1) || '0.0'}h`
                       )}
                     </p>
-                    <p className="text-sm text-blue-600 mt-1">
+                    <p className="text-sm text-green-500 mt-1">
                       Avg: {stats?.averageHoursPerDay?.toFixed(1) || '0.0'}h/day
                     </p>
                   </div>
-                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                    <ClockCircleOutlined className="w-6 h-6 text-green-600" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <ClockCircleOutlined className="w-8 h-8 text-white" />
                   </div>
                 </div>
               </div>
 
-              <div className="premium-card p-6 hover-lift">
+              <div className="premium-card p-6 hover-lift bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Efficiency</p>
-                    <p className="text-3xl font-bold text-gray-900 mt-2">98.5%</p>
-                    <p className="text-sm text-green-600 mt-1">+2.1% from last week</p>
+                    <p className="text-sm font-medium text-purple-600">Efficiency</p>
+                    <p className="text-3xl font-bold text-purple-700 mt-2">98.5%</p>
+                    <p className="text-sm text-purple-500 mt-1">+2.1% from last week</p>
                   </div>
-                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                    <RiseOutlined className="w-6 h-6 text-purple-600" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <RiseOutlined className="w-8 h-8 text-white" />
                   </div>
                 </div>
               </div>
 
-              <div className="premium-card p-6 hover-lift">
+              <div className="premium-card p-6 hover-lift bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Locations</p>
-                    <p className="text-3xl font-bold text-gray-900 mt-2">3</p>
-                    <p className="text-sm text-gray-600 mt-1">Active zones</p>
+                    <p className="text-sm font-medium text-orange-600">Locations</p>
+                    <p className="text-3xl font-bold text-orange-700 mt-2">3</p>
+                    <p className="text-sm text-orange-500 mt-1">Active zones</p>
                   </div>
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-                    <EnvironmentOutlined className="w-6 h-6 text-orange-600" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <EnvironmentOutlined className="w-8 h-8 text-white" />
                   </div>
                 </div>
               </div>
@@ -183,7 +183,7 @@ export default function ManagerDashboard({ user }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-green-50 bg-galaxy-pattern">
       <Navbar userRole="MANAGER" userName={user.name} userEmail={user.email} userImage={auth0User?.picture} />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

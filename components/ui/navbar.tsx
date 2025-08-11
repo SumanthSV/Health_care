@@ -220,9 +220,12 @@ export default function Navbar({ userRole, userName, userEmail, userImage }: Nav
             </div>
           </div>
         </div>
+        </div>
+      )}
 
-        {/* Mobile Navigation Menu */}
-        {isMobileMenuOpen && (
+      {/* Mobile Navigation Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden">
           <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
             <div className="px-4 py-4 space-y-2">
               {isAuthenticated ? (
