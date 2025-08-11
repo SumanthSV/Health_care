@@ -2,6 +2,7 @@ import { prisma } from '../prisma'
 import { getSession } from '@auth0/nextjs-auth0'
 import { GraphQLScalarType } from 'graphql'
 import { Kind } from 'graphql/language'
+import { getDistance, isPointWithinRadius } from 'geolib'
 
 // Custom scalar types
 const DateTimeScalar = new GraphQLScalarType({
@@ -18,35 +19,46 @@ const JSONScalar = new GraphQLScalarType({
   parseLiteral: (ast) => ast.kind === Kind.STRING ? JSON.parse(ast.value) : ast.value,
 })
 
-// Helper functions
-const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-  const R = 6371 // Earth's radius in kilometers
-  const dLat = (lat2 - lat1) * Math.PI / 180
-  const dLon = (lon2 - lon1) * Math.PI / 180
-  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon/2) * Math.sin(dLon/2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
-  return R * c
-}
-
 const isWithinPerimeter = async (location: any): Promise<boolean> => {
   const locationSettings = await prisma.locationSetting.findMany({
     where: { isActive: true }
   })
   
   for (const setting of locationSettings) {
-    const distance = calculateDistance(
-      location.lat,
-      location.lng,
-      setting.latitude,
-      setting.longitude
+    // Using geolib's isPointWithinRadius for accurate perimeter checking
+    const isWithin = isPointWithinRadius(
+      { latitude: location.lat, longitude: location.lng },
+      { latitude: setting.latitude, longitude: setting.longitude },
+      setting.radius * 1000 // Convert radius from kilometers to meters
     )
-    if (distance <= setting.radius) {
+    
+    if (isWithin) {
       return true
     }
   }
   return false
+}
+
+// Helper function to get distance in meters for display purposes
+const getDistanceToNearestLocation = async (location: any): Promise<number> => {
+  const locationSettings = await prisma.locationSetting.findMany({
+    where: { isActive: true }
+  })
+  
+  let minDistance = Infinity
+  
+  for (const setting of locationSettings) {
+    const distance = getDistance(
+      { latitude: location.lat, longitude: location.lng },
+      { latitude: setting.latitude, longitude: setting.longitude }
+    )
+    
+    if (distance < minDistance) {
+      minDistance = distance
+    }
+  }
+  
+  return minDistance === Infinity ? 0 : minDistance
 }
 
 export const resolvers = {
