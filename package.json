@@ -17,8 +17,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@apollo/client": "^3.8.7",
-    "@apollo/server": "^4.9.5",
+    "@apollo/server": "^5.0.0",
     "@as-integrations/next": "^4.0.0",
     "@auth0/nextjs-auth0": "^3.8.0",
     "@hookform/resolvers": "^3.9.0",
