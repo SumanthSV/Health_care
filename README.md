@@ -193,13 +193,26 @@ healthshift/
 
 ```dockerfile
 FROM node:18-alpine
+
+# Set working directory
 WORKDIR /app
+
+# Copy package files first for caching
 COPY package*.json ./
-RUN npm ci --only=production
+
+# Install dependencies ignoring peer dependency conflicts
+RUN npm ci --only=production --legacy-peer-deps
+
+# Copy the rest of the app
 COPY . .
+
+# Build the app
 RUN npm run build
+
+# Expose port and run the app
 EXPOSE 3000
 CMD ["npm", "start"]
+
 ```
 
 ## 🧪 Testing
