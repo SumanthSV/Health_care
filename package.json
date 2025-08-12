@@ -67,6 +67,7 @@
     "embla-carousel-react": "^8.3.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.5.1",
+    "geolib": "^3.3.4",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "input-otp": "^1.2.4",

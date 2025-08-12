@@ -80,7 +80,7 @@ export default function Dashboard() {
 
   if (auth0Loading || loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 bg-mesh-gradient">
         <Spin size="large" />
         <p>Loading dashboard...</p>
       </div>
@@ -96,7 +96,7 @@ export default function Dashboard() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 bg-mesh-gradient">
         <Spin size="large" tip="Setting up your account..." />
         <p>We’re setting up your account...</p>
       </div>
