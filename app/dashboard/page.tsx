@@ -54,12 +54,12 @@ export default function Dashboard() {
     if (!loading && !error && auth0User && !data?.me) {
       (async () => {
         try {
-          // console.log('Creating new user in DB with:', {
-          //   email: auth0User.email,
-          //   name: auth0User.name || auth0User.email,
-          //   role: 'CARE_WORKER',
-          //   auth0Id: auth0User.sub,
-          // });
+          console.log('Creating new user in DB with:', {
+            email: auth0User.email,
+            name: auth0User.name || auth0User.email,
+            role: 'CARE_WORKER',
+            auth0Id: auth0User.sub,
+          });
 
           await createUser({
             variables: {
@@ -90,7 +90,7 @@ export default function Dashboard() {
   }
 
   const user = data?.me;
-  // console.log('User Data:', user);
+  console.log('User Data:', user);
 
   if (!user) {
     return (
