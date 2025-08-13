@@ -145,7 +145,7 @@ export default function Navbar({ userRole, userName, userEmail, userImage }: Nav
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="relative h-10 w-10 rounded-full ml-4">
                         <Avatar className="h-10 w-10">
-                          <AvatarImage src={userImage || user?.picture} alt={userName || user?.name} />
+                          <AvatarImage src={userImage ?? user?.picture ?? undefined} alt={(userName || user?.name) || undefined} />
                           <AvatarFallback className="bg-primary text-white">
                             {getUserInitials(userName || user?.name || 'U')}
                           </AvatarFallback>
@@ -230,7 +230,7 @@ export default function Navbar({ userRole, userName, userEmail, userImage }: Nav
                   {/* User Info */}
                   <div className="flex items-center space-x-3 pb-4 border-b border-gray-200">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={userImage || user?.picture} alt={userName || user?.name} />
+                      <AvatarImage src={userImage ?? user?.picture ?? undefined} alt={(userName || user?.name) || undefined} />
                       <AvatarFallback className="bg-primary text-white">
                         {getUserInitials(userName || user?.name || 'U')}
                       </AvatarFallback>

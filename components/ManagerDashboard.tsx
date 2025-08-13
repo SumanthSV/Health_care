@@ -51,7 +51,7 @@ interface Props {
 
 export default function ManagerDashboard({ user }: Props) {
   const searchParams = useSearchParams();
-  const [selectedTab, setSelectedTab] = useState(searchParams.get('tab') || 'overview');
+  const [selectedTab, setSelectedTab] = useState(searchParams!.get('tab') || 'overview');
   const { user: auth0User } = useUser();
   const [isLoading, setIsLoading] = useState(true);
   const { data: statsData, loading: statsLoading } = useQuery(GET_DASHBOARD_STATS, {
@@ -59,7 +59,7 @@ export default function ManagerDashboard({ user }: Props) {
   });
 
   useEffect(() => {
-    const tab = searchParams.get('tab') || 'overview';
+    const tab = searchParams!.get('tab') || 'overview';
     setSelectedTab(tab);
     setIsLoading(false);
   }, [searchParams]);
@@ -67,7 +67,7 @@ export default function ManagerDashboard({ user }: Props) {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar userRole="MANAGER" userName={user.name} userEmail={user.email} userImage={auth0User?.picture} />
+        <Navbar userRole="MANAGER" userName={user.name} userEmail={user.email} userImage={auth0User?.picture ?? undefined} />
         <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
           <div className="text-center animate-fade-in">
             <Spin size="large" />
@@ -184,7 +184,7 @@ export default function ManagerDashboard({ user }: Props) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-green-50 bg-galaxy-pattern">
-      <Navbar userRole="MANAGER" userName={user.name} userEmail={user.email} userImage={auth0User?.picture} />
+      <Navbar userRole="MANAGER" userName={user.name} userEmail={user.email} userImage={auth0User?.picture ?? undefined} />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

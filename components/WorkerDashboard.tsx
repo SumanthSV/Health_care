@@ -89,7 +89,7 @@ interface Props {
 
 export default function WorkerDashboard({ user }: Props) {
   const searchParams = useSearchParams();
-  const [currentView, setCurrentView] = useState(searchParams.get('tab') || 'clock');
+  const [currentView, setCurrentView] = useState(searchParams!.get('tab') || 'clock');
   const [currentLocation, setCurrentLocation] = useState<{lat: number, lng: number} | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [withinPerimeter, setWithinPerimeter] = useState(false);
@@ -117,7 +117,7 @@ export default function WorkerDashboard({ user }: Props) {
 
   // Get current location
   useEffect(() => {
-    const tab = searchParams.get('tab') || 'clock';
+    const tab = searchParams!.get('tab') || 'clock';
     setCurrentView(tab);
   }, [searchParams]);
 
@@ -556,7 +556,7 @@ export default function WorkerDashboard({ user }: Props) {
             }`}>
               {clockAction === 'in' ? 
                 <ClockCircleOutlined className={`w-5 h-5 ${clockAction === 'in' ? 'text-green-600' : 'text-red-600'}`} /> :
-                <StopOutlined className={`w-5 h-5 ${clockAction === 'in' ? 'text-green-600' : 'text-red-600'}`} />
+                <StopOutlined className="w-5 h-5 text-red-600" />
               }
             </div>
             <span className="text-lg font-semibold">
@@ -618,7 +618,7 @@ export default function WorkerDashboard({ user }: Props) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 bg-ripple-pattern" ref={dashboardRef}>
-      <Navbar userRole="CARE_WORKER" userName={user.name} userEmail={user.email} userImage={auth0User?.picture} />
+      <Navbar userRole="CARE_WORKER" userName={user.name} userEmail={user.email} userImage={auth0User?.picture ?? undefined} />
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
         {/* Header */}

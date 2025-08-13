@@ -16,7 +16,13 @@ const JSONScalar = new GraphQLScalarType({
   name: 'JSON',
   serialize: (value: any) => value,
   parseValue: (value: any) => value,
-  parseLiteral: (ast) => ast.kind === Kind.STRING ? JSON.parse(ast.value) : ast.value,
+  parseLiteral: (ast) => {
+    if (ast.kind === Kind.STRING || ast.kind === Kind.BOOLEAN || ast.kind === Kind.INT || ast.kind === Kind.FLOAT) {
+      // @ts-ignore
+      return JSON.parse(ast.value as string)
+    }
+    return null
+  },
 })
 
 const isWithinPerimeter = async (location: any): Promise<boolean> => {

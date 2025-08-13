@@ -187,7 +187,7 @@ export default function ShiftHistory() {
     },
   ];
 
-  const totalHours = filteredShifts.reduce((total, shift) => {
+  const totalHours = filteredShifts.reduce((total: number, shift: any) => {
     if (shift.clockInTime && shift.clockOutTime) {
       const start = new Date(shift.clockInTime);
       const end = new Date(shift.clockOutTime);
