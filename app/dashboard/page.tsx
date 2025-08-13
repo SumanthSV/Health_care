@@ -69,8 +69,6 @@ export default function Dashboard() {
               auth0Id: auth0User.sub,
             },
           });
-
-          await refetch();
         } catch (err) {
           console.error('User creation failed:', err);
         }
