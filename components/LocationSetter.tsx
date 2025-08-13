@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 'use client'
 
 import React, { useState, useCallback, useEffect } from 'react';
@@ -661,6 +660,4 @@ export default function LocationSetter() {
     </div>
   );
 }
-=======
-{"code":"rate-limited","message":"You have hit the rate limit. Please upgrade to keep chatting.","providerLimitHit":false,"isRetryable":true}
->>>>>>> f95765c51364a2b7e36434222015dcfaf91eecbc
+

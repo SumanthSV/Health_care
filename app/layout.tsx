@@ -3,7 +3,7 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/';
 import { apolloClient } from '../lib/apollo-client';
 import { ConfigProvider, theme } from 'antd';
 import { Toaster } from 'sonner';
