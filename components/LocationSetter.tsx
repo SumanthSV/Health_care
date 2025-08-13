@@ -420,7 +420,7 @@ export default function LocationSetter() {
             </div>
 
             <div className="mt-4 text-xs text-gray-500 bg-gray-50 rounded-lg p-3">
-              💡 <strong>Tip:</strong> Search for specific addresses like "123 Main St Hospital" or facility names for the most accurate results.
+              💡 <strong>Tip:</strong> Search for specific addresses like '123 Main St Hospital' or facility names for the most accurate results.
             </div>
           </div>
 
@@ -613,8 +613,7 @@ export default function LocationSetter() {
                           fillOpacity: 0.15,
                           strokeColor: '#3b82f6',
                           strokeOpacity: 0.8,
-                          strokeWeight: 3,
-                          strokeDashArray: [5, 5],
+                          strokeWeight: 3
                         }}
                       />
                     </>
