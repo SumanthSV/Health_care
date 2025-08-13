@@ -176,7 +176,6 @@ export default function AnalyticsDashboard() {
         beginAtZero: true,
         grid: {
           color: 'rgba(0, 0, 0, 0.05)',
-          drawBorder: false,
         },
         ticks: {
           font: {
