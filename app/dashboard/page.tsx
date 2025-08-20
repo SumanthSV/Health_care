@@ -44,43 +44,42 @@ export default function Dashboard() {
   const [createUser] = useMutation(CREATE_USER);
 
   useEffect(() => {
-  if (auth0Loading) return;
-  if (!auth0User) {
-    router.push('/');
-    return;
-  }
+    if (auth0Loading) return;
+    if (!auth0User) {
+      router.push('/');
+      return;
+    }
 
-  const setupUser = async () => {
-    if (!data?.me) {
-      try {
-        console.log('Creating new user in DB with:', {
-          email: auth0User.email,
-          name: auth0User.name || auth0User.email,
-          role: 'CARE_WORKER',
-          auth0Id: auth0User.sub,
-        });
-
-        const result = await createUser({
-          variables: {
+    const setupUser = async () => {
+      if (!data?.me) {
+        try {
+          console.log('Creating new user in DB with:', {
             email: auth0User.email,
             name: auth0User.name || auth0User.email,
-            role: 'MANAGER',
+            role: 'CARE_WORKER',
             auth0Id: auth0User.sub,
-          },
-        });
+          });
 
-        console.log('User created:', result.data.createUser);
+          const result = await createUser({
+            variables: {
+              email: auth0User.email,
+              name: auth0User.name || auth0User.email,
+              role: 'MANAGER',
+              auth0Id: auth0User.sub,
+            },
+          });
 
-        // Refetch the user after creation
-        await refetch();
-      } catch (err) {
-        console.error('User creation failed:', err);
+          console.log('User created:', result.data.createUser);
+
+          // Refetch the user after creation
+          await refetch();
+        } catch (err) {
+          console.error('User creation failed:', err);
+        }
       }
-    }
-  };
-
-  setupUser();
-}, [auth0Loading, auth0User, data, createUser, refetch, router]);
+    };
+    setupUser();
+  }, [auth0Loading, auth0User, data, createUser, refetch, router]);
 
 
   if (auth0Loading || loading) {
